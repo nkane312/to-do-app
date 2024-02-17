@@ -27,7 +27,9 @@ function App() {
   }
 
   const checkboxOnClick = (listItem: ToDoItem) => {
-    setListState([{...listItem, itemStatus: !listItem.itemStatus}])
+    setListState(listState.map((item) => 
+      item.id === listItem.id ? {...item, itemStatus: !item.itemStatus} : item
+    ))
   }
 
   return (
@@ -50,6 +52,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
