@@ -14,8 +14,16 @@ function App() {
   const onSubmit = () => {
     console.log('********************', inputRef.current?.value)
     if (inputRef.current?.value) {
-      setListState([{id: uuid(), toDoItem:inputRef.current?.value, itemStatus: false}]);
+      setListState([...listState, {id: uuid(), toDoItem:inputRef.current?.value, itemStatus: false}]);
+
+      inputRef.current.value = '';
     }
+  }
+
+  const clear = () => {
+    setListState(listState.filter((listItem) => 
+      listItem.itemStatus === false
+    ))
   }
 
   const checkboxOnClick = (listItem: ToDoItem) => {
@@ -26,17 +34,6 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
         <label>Enter todo item
           <input ref={inputRef} type="text"></input>
         </label>
@@ -47,6 +44,8 @@ function App() {
         </ul>
 
         <button type="submit" onClick={onSubmit}>Add todo</button>
+
+        <button type="button" onClick={clear}>Clear</button>
       </header>
     </div>
   );
