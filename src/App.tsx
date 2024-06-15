@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { v4 as uuid } from 'uuid';
+import Header from './Header';
 
 type ToDoItem = {id: string, toDoItem: string, itemStatus: boolean}
 
@@ -12,7 +13,6 @@ function App() {
   const inputRef = useRef<HTMLInputElement>(null);
   
   const onSubmit = () => {
-    console.log('********************', inputRef.current?.value)
     if (inputRef.current?.value) {
       setListState([...listState, {id: uuid(), toDoItem:inputRef.current?.value, itemStatus: false}]);
 
@@ -36,12 +36,13 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
+        <Header />
         <label>Enter todo item
           <input ref={inputRef} type="text"></input>
         </label>
         <ul aria-label="To do items">
           {listState.map(listItem => 
-            <li key={listItem.id}><label>{listItem.toDoItem} <input type='checkbox' onClick={() => checkboxOnClick(listItem)} checked={listItem.itemStatus} /></label></li>
+            <li key={listItem.id}><label>{listItem.toDoItem} <input type='checkbox' onChange={() => checkboxOnClick(listItem)} checked={listItem.itemStatus} /></label></li>
           )}
         </ul>
 
