@@ -21,7 +21,7 @@ const ToDoListItem = ({listItems, onChangeTask}: {
     //   )}
 
   return (
-    <ul>
+    <ul aria-label="To do items">
       {listItems.map(listItem => 
         <li key={listItem.id}><label>{listItem.toDoItem} <input type='checkbox' onChange={() => onChangeTask(listItem)} checked={listItem.itemStatus} /></label></li>
       )}
