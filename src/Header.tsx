@@ -1,21 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useAPI } from './context/MoviesProvider';
 
 const Header = () => {
-    const [nameState, setNameState] = useState<String>('');
+  const { data, isLoading } = useAPI();
 
-    async function logMovies() {
-        const response = await fetch("https://swapi.dev/api/people/1/");
-        const movies = await response.json();
-        setNameState(movies.name);
-      }
-    
-      useEffect(() => {
-        logMovies()
-      }, [])
-
-      return (
-        <h1>{nameState}'s To Do List</h1>
-      )
-}
+  return <h1>{!isLoading ? data.name : 'Loading...'}'s To Do List</h1>;
+};
 
 export default Header;
