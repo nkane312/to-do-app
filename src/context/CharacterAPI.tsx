@@ -23,7 +23,7 @@ interface CharacterType {
 interface CharacterContext {
   characters: CharacterType[];
   isLoading: boolean;
-  chIndex: number;
+  characterIndex: number;
   increment: Function;
 }
 
@@ -31,30 +31,34 @@ const CharactersContext = createContext<CharacterContext | undefined>(undefined)
 
 export const CharactersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [characters, setCharacters] = useState<CharacterType[]>([]);
-  const [chIndex, setChIndex] = useState(1);
+  const [characterIndex, setCharacterIndex] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
+
   const increment = (direction: String) => {
     if (direction === 'next') {
-      setChIndex(chIndex + 1);
+      setCharacterIndex(characterIndex + 1);
     } else {
-      setChIndex(chIndex - 1);
+      setCharacterIndex(characterIndex - 1);
     }
   };
 
   useEffect(() => {
     const logCharacters = async () => {
       setIsLoading(true);
-      const response = await fetch('https://swapi.dev/api/people/' + chIndex + '/');
-      const list = await response.json();
-      setCharacters((oldCharacter) => [...oldCharacter, list]);
+      if (!characters[characterIndex]) {
+        console.log(characters[characterIndex]);
+        const response = await fetch('https://swapi.dev/api/people/' + characterIndex + '/');
+        const list = await response.json();
+        setCharacters((oldCharacter) => [...oldCharacter, list]);
+      }
       setIsLoading(false);
     };
 
     logCharacters().catch(console.error);
-  }, [chIndex]);
+  }, [characterIndex]);
 
   return (
-    <CharactersContext.Provider value={{ characters, isLoading, chIndex, increment }}>
+    <CharactersContext.Provider value={{ characters, isLoading, characterIndex, increment }}>
       {children}
     </CharactersContext.Provider>
   );

@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen, fireEvent, within } from '@testing-library/react';
 import App from './App';
+import { CharactersProvider } from './context/CharacterAPI';
+import { ListItemsProvider } from './context/ListItemContext';
 
 let fetchMock: any = undefined;
 
@@ -37,25 +39,49 @@ beforeEach(() => {
 });
 
 test('Has an input for entering to-do items', () => {
-  render(<App />);
+  render(
+    <CharactersProvider>
+      <ListItemsProvider>
+        <App />
+      </ListItemsProvider>
+    </CharactersProvider>,
+  );
   const todoInput = screen.getByRole('textbox', { name: 'Enter to-do item' });
   expect(todoInput).toBeVisible();
 });
 
 test('Has a display of existing items', async () => {
-  render(<App />);
+  render(
+    <CharactersProvider>
+      <ListItemsProvider>
+        <App />
+      </ListItemsProvider>
+    </CharactersProvider>,
+  );
   const displayDiv = screen.getByRole('list', { name: 'To do items' });
   expect(displayDiv).toBeVisible();
 });
 
 test('Adds a todo item when the submit button is clicked', async () => {
-  render(<App />);
+  render(
+    <CharactersProvider>
+      <ListItemsProvider>
+        <App />
+      </ListItemsProvider>
+    </CharactersProvider>,
+  );
   await addTodo('Buy bread');
   await addTodo('Buy eggs');
 });
 
 test('Sets status of list items to checked when clicked', async () => {
-  render(<App />);
+  render(
+    <CharactersProvider>
+      <ListItemsProvider>
+        <App />
+      </ListItemsProvider>
+    </CharactersProvider>,
+  );
   await addTodo('Buy bread');
   const todoItem = await screen.findByRole('list');
   const listItemWithText = await within(todoItem).findByText('Buy bread');
@@ -68,7 +94,13 @@ test('Sets status of list items to checked when clicked', async () => {
 });
 
 test('Clears checked items when clear button is clicked', async () => {
-  render(<App />);
+  render(
+    <CharactersProvider>
+      <ListItemsProvider>
+        <App />
+      </ListItemsProvider>
+    </CharactersProvider>,
+  );
   await addTodo('Buy bread');
   await addTodo('Buy eggs');
 
@@ -82,7 +114,13 @@ test('Clears checked items when clear button is clicked', async () => {
 });
 
 test('Luke exists', async () => {
-  render(<App />);
+  render(
+    <CharactersProvider>
+      <ListItemsProvider>
+        <App />
+      </ListItemsProvider>
+    </CharactersProvider>,
+  );
   const lukeText = await screen.findByText(/Luke Skywalker/);
   expect(lukeText).toBeVisible();
 });

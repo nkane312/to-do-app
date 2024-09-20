@@ -4,12 +4,15 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { CharactersProvider } from './context/CharacterAPI';
+import { ListItemsProvider } from './context/ListItemContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
   <React.StrictMode>
     <CharactersProvider>
-      <App />
+      <ListItemsProvider>
+        <App />
+      </ListItemsProvider>
     </CharactersProvider>
   </React.StrictMode>,
 );

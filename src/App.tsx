@@ -1,49 +1,39 @@
-import { useRef, useReducer } from 'react';
+import { useRef } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 import Header from './Header';
 import ToDoListItem from './ToDoListItem';
-import listItemReducer from './listItemReducer';
 
 import Button from './Button';
 import { useAPI } from './context/CharacterAPI';
+import {
+  useAddTask,
+  useClearTask,
+  useCurrentCharacterTodoList,
+  useToggleStatusTask,
+} from './context/ListItemContext';
 
-type ToDoItem = { id: string; toDoItem: string; itemStatus: boolean };
+export type ToDoItem = { id: string; toDoItem: string; itemStatus: boolean };
 
 function App() {
-  const [listItems, dispatch] = useReducer(listItemReducer, []);
-
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const { chIndex, increment } = useAPI();
+  const { characterIndex, increment } = useAPI();
+  const currentCharacterTodoList = useCurrentCharacterTodoList();
 
-  function handleAddTask() {
-    if (inputRef.current?.value) {
-      dispatch({
-        type: 'added',
-        text: inputRef.current?.value,
-        listItem: { id: '', toDoItem: '', itemStatus: false },
-      });
+  const addTask = useAddTask();
+  const addTaskClick = () => {
+    if (inputRef?.current?.value) {
+      addTask(inputRef.current.value);
       inputRef.current.value = '';
     }
-  }
+  };
 
-  function handleChangeTask(listItem: ToDoItem) {
-    dispatch({
-      type: 'changed',
-      text: '',
-      listItem: listItem,
-    });
-  }
-
-  function handleClearTask(listItem: ToDoItem) {
-    dispatch({
-      type: 'clear',
-      text: '',
-      listItem: listItem,
-    });
-  }
+  const clearTask = useClearTask();
+  const clearTaskClick = () => {
+    clearTask();
+  };
 
   return (
     <div className="App">
@@ -55,13 +45,13 @@ function App() {
           <input ref={inputRef} type="text"></input>
         </label>
 
-        <ToDoListItem listItems={listItems} onChangeTask={handleChangeTask} />
+        <ToDoListItem listItems={currentCharacterTodoList} onChangeTask={useToggleStatusTask} />
 
-        <Button task={{ taskFunction: handleAddTask, text: 'Add to-do', buttonType: 'submit' }} />
+        <Button task={{ taskFunction: addTaskClick, text: 'Add to-do', buttonType: 'submit' }} />
 
-        <Button task={{ taskFunction: handleClearTask, text: 'Clear', buttonType: 'button' }} />
+        <Button task={{ taskFunction: clearTaskClick, text: 'Clear', buttonType: 'button' }} />
 
-        {chIndex > 1 ? (
+        {characterIndex > 1 ? (
           <Button
             task={{
               taskFunction: () => increment('prev'),
