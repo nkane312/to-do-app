@@ -13,6 +13,7 @@ import {
   useCurrentCharacterTodoList,
   useToggleStatusTask,
 } from './context/ListItemContext';
+import CharacterInfo from './CharacterInfo';
 
 export type ToDoItem = { id: string; toDoItem: string; itemStatus: boolean };
 
@@ -44,6 +45,8 @@ function App() {
           Enter to-do item
           <input ref={inputRef} type="text"></input>
         </label>
+
+        <CharacterInfo />
 
         <ToDoListItem listItems={currentCharacterTodoList} onChangeTask={useToggleStatusTask} />
 

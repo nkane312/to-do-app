@@ -3,36 +3,18 @@ import { render, screen, fireEvent, within } from '@testing-library/react';
 import App from './App';
 import { CharactersProvider } from './context/CharacterAPI';
 import { ListItemsProvider } from './context/ListItemContext';
+import C3PO from '../mocks/c3po.json';
+import Luke from '../mocks/luke.json';
 
 let fetchMock: any = undefined;
 
-const assetsFetchMock = () =>
-  Promise.resolve({
-    json: () =>
-      Promise.resolve({
-        name: 'Luke Skywalker',
-        height: '172',
-        mass: '77',
-        hair_color: 'blond',
-        skin_color: 'fair',
-        eye_color: 'blue',
-        birth_year: '19BBY',
-        gender: 'male',
-        homeworld: 'https://swapi.dev/api/planets/1/',
-        films: [
-          'https://swapi.dev/api/films/1/',
-          'https://swapi.dev/api/films/2/',
-          'https://swapi.dev/api/films/3/',
-          'https://swapi.dev/api/films/6/',
-        ],
-        species: [],
-        vehicles: ['https://swapi.dev/api/vehicles/14/', 'https://swapi.dev/api/vehicles/30/'],
-        starships: ['https://swapi.dev/api/starships/12/', 'https://swapi.dev/api/starships/22/'],
-        created: '2014-12-09T13:50:51.644000Z',
-        edited: '2014-12-20T21:17:56.891000Z',
-        url: 'https://swapi.dev/api/people/1/',
-      }),
+const assetsFetchMock = (url: RequestInfo | URL) => {
+  const mock = url.toString().endsWith('1/') ? Luke : C3PO;
+
+  return Promise.resolve({
+    json: () => Promise.resolve(mock),
   } as Response);
+};
 
 beforeEach(() => {
   fetchMock = jest.spyOn(global, 'fetch').mockImplementation(assetsFetchMock);
@@ -123,6 +105,26 @@ test('Luke exists', async () => {
   );
   const lukeText = await screen.findByText(/Luke Skywalker/);
   expect(lukeText).toBeVisible();
+});
+
+test('Cycles to the next character in the list', async () => {
+  render(
+    <CharactersProvider>
+      <ListItemsProvider>
+        <App />
+      </ListItemsProvider>
+    </CharactersProvider>,
+  );
+  const lukeTitle = await screen.findByText(/Luke Skywalker/);
+  expect(lukeTitle).toBeVisible();
+  await addTodo('Buy bread');
+  await addTodo('Buy eggs');
+
+  const nextButton = screen.getByRole('button', { name: 'Next Character' });
+  fireEvent.click(nextButton);
+
+  const c3poTitle = await screen.findByText(/C-3PO/);
+  expect(c3poTitle).toBeVisible();
 });
 
 const addTodo = async (todo: string) => {
