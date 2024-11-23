@@ -10,7 +10,7 @@ type CharacterToDoList = {
 
 export interface CharacterToDoListContext {
   allCharacterTodoLists: CharacterToDoList;
-  setCharacterTodoLists: Dispatch<SetStateAction<CharacterToDoList>>;
+  setCharacterTodoLists: Dispatch<CharacterToDoList>;
 }
 
 const initialList = {
@@ -79,9 +79,19 @@ export function useCurrentCharacterTodoList() {
 }
 
 export const ListItemsProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [allCharacterTodoLists, setCharacterTodoLists] = useState<CharacterToDoList>({
-    1: [] as ToDoItem[],
-  });
+  const [allCharacterTodoLists, setCharacterTodoListsState] = useState<CharacterToDoList>(
+    JSON.parse(
+      window.localStorage.getItem('todos') ??
+        JSON.stringify({
+          1: [] as ToDoItem[],
+        }),
+    ),
+  );
+
+  const setCharacterTodoLists = (value: CharacterToDoList) => {
+    setCharacterTodoListsState(value);
+    window.localStorage.setItem('todos', JSON.stringify(value));
+  };
 
   return (
     <ListItemsContext.Provider value={{ allCharacterTodoLists, setCharacterTodoLists }}>

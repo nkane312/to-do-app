@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import logo from './logo.svg';
+import logo from './89_starwars.svg';
 import './App.css';
 
 import Header from './Header';
@@ -37,41 +37,56 @@ function App() {
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className="App h-screen">
+      <header className="flex bg-gray-200 justify-center items-center text-2xl text-white flex-col h-1/5 pt-10">
+        <img src={logo} className="App-logo w-48" alt="logo" />
         <Header />
-        <label>
-          Enter to-do item
-          <input ref={inputRef} type="text"></input>
-        </label>
-
-        <CharacterInfo />
-
-        <ToDoListItem listItems={currentCharacterTodoList} onChangeTask={useToggleStatusTask} />
-
-        <Button task={{ taskFunction: addTaskClick, text: 'Add to-do', buttonType: 'submit' }} />
-
-        <Button task={{ taskFunction: clearTaskClick, text: 'Clear', buttonType: 'button' }} />
-
-        {characterIndex > 1 ? (
-          <Button
-            task={{
-              taskFunction: () => increment('prev'),
-              text: 'Previous Character',
-              buttonType: 'button',
-            }}
-          />
-        ) : null}
-
-        <Button
-          task={{
-            taskFunction: () => increment('next'),
-            text: 'Next Character',
-            buttonType: 'button',
-          }}
-        />
       </header>
+      <main className="flex bg-gray-800 justify-center text-2xl text-white flex-col p-3 h-4/5">
+        <div className="flex gap-2 pb-5 flex-col justify-center w-4/5 m-auto">
+          <ToDoListItem listItems={currentCharacterTodoList} onChangeTask={useToggleStatusTask} />
+
+          <div className="self-end">
+            <Button task={{ taskFunction: clearTaskClick, text: 'Clear', buttonType: 'button' }} />
+          </div>
+
+          <div className="flex gap-4 justify-end items-center">
+            <label>
+              Enter item:
+              <input
+                ref={inputRef}
+                type="text"
+                className="text-black ml-3 px-2 inline-block"
+              ></input>
+            </label>
+
+            <Button task={{ taskFunction: addTaskClick, text: 'Add', buttonType: 'submit' }} />
+          </div>
+        </div>
+
+        <div className="flex gap-2 pb-5 flex-col justify-center w-4/5 m-auto">
+          <CharacterInfo />
+          <div className="flex gap-4 justify-center">
+            {characterIndex > 1 ? (
+              <Button
+                task={{
+                  taskFunction: () => increment('prev'),
+                  text: 'Previous Character',
+                  buttonType: 'button',
+                }}
+              />
+            ) : null}
+
+            <Button
+              task={{
+                taskFunction: () => increment('next'),
+                text: 'Next Character',
+                buttonType: 'button',
+              }}
+            />
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

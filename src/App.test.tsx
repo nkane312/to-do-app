@@ -19,6 +19,9 @@ const assetsFetchMock = (url: RequestInfo | URL) => {
 beforeEach(() => {
   fetchMock = jest.spyOn(global, 'fetch').mockImplementation(assetsFetchMock);
 });
+afterEach(() => {
+  window.localStorage.clear();
+});
 
 test('Has an input for entering to-do items', () => {
   render(
@@ -28,7 +31,7 @@ test('Has an input for entering to-do items', () => {
       </ListItemsProvider>
     </CharactersProvider>,
   );
-  const todoInput = screen.getByRole('textbox', { name: 'Enter to-do item' });
+  const todoInput = screen.getByRole('textbox', { name: 'Enter item:' });
   expect(todoInput).toBeVisible();
 });
 
@@ -128,9 +131,9 @@ test('Cycles to the next character in the list', async () => {
 });
 
 const addTodo = async (todo: string) => {
-  const todoInput = screen.getByRole<HTMLInputElement>('textbox', { name: 'Enter to-do item' });
+  const todoInput = screen.getByRole<HTMLInputElement>('textbox', { name: 'Enter item:' });
   fireEvent.change(todoInput, { target: { value: todo } });
-  const submitButton = screen.getByRole('button', { name: 'Add to-do' });
+  const submitButton = screen.getByRole('button', { name: 'Add' });
   fireEvent.click(submitButton);
   const todoItem = await screen.findByRole('list');
   const listItemWithText = await within(todoItem).findByText(todo);

@@ -6,7 +6,7 @@ const Header = () => {
 
   return (
     <h1 className="text-3xl font-bold underline py-2">
-      {!isLoading ? characterName : 'Loading...'}'s To Do List
+      {!isLoading ? characterName : 'Loading...'}
     </h1>
   );
 };
