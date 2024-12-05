@@ -5,9 +5,11 @@ const Header = () => {
   const characterName = characters[characterIndex - 1]?.name ?? '¯\\_(ツ)_/¯';
 
   return (
-    <h1 className="text-3xl font-bold underline py-2">
-      {!isLoading ? characterName : 'Loading...'}
-    </h1>
+    <div className="flex-1">
+      <h1 className="text-3xl font-bold text-slate-950 py-2 ml-5">
+        {!isLoading ? characterName : 'Loading...'}
+      </h1>
+    </div>
   );
 };
 

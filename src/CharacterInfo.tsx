@@ -5,10 +5,12 @@ const CharacterInfo = () => {
   const character = characters[characterIndex - 1] ?? '¯\\_(ツ)_/¯';
 
   return (
-    <div className="flex justify-start items-start flex-col bg-slate-900 text-white p-4 m-2 rounded-xl">
-      <h2 className="text-2xl self-center font-bold underline">Character Info</h2>
+    <div className="flex justify-start items-start flex-col bg-slate-900 text-white my-2 rounded-xl">
+      <h2 className="text-2xl self-center font-bold w-full text-center text-slate-950 bg-gray-200 p-2 rounded-xl">
+        Character Info
+      </h2>
       {!isLoading ? (
-        <div className="flex min-w-0 gap-x-4 flex-col items-start">
+        <div className="flex min-w-0 gap-x-4 flex-col items-start p-4 w-full">
           <p>Birth Year: {character.birth_year}</p>
           <p>Mass: {character.mass}</p>
           <p>Height: {character.height}</p>

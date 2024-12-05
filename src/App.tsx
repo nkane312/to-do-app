@@ -37,30 +37,36 @@ function App() {
   };
 
   return (
-    <div className="App h-screen">
-      <header className="flex bg-gray-200 justify-center items-center text-2xl text-white flex-col h-1/5 pt-10">
-        <img src={logo} className="App-logo w-48" alt="logo" />
+    <div className="h-screen bg-gray-800">
+      <header className="flex bg-gray-200 justify-center items-center text-2xl text-white h-1/6 py-2">
+        <div className="flex-none self-start">
+          <img src={logo} className="w-36" alt="logo" />
+        </div>
         <Header />
       </header>
-      <main className="flex bg-gray-800 justify-center text-2xl text-white flex-col p-3 h-4/5">
+      <main className="flex justify-center text-2xl text-white flex-col p-3 h-4/5">
         <div className="flex gap-2 pb-5 flex-col justify-center w-4/5 m-auto">
           <ToDoListItem listItems={currentCharacterTodoList} onChangeTask={useToggleStatusTask} />
 
-          <div className="self-end">
+          <div className="self-start">
             <Button task={{ taskFunction: clearTaskClick, text: 'Clear', buttonType: 'button' }} />
           </div>
 
-          <div className="flex gap-4 justify-end items-center">
-            <label>
-              Enter item:
-              <input
-                ref={inputRef}
-                type="text"
-                className="text-black ml-3 px-2 inline-block"
-              ></input>
-            </label>
+          <div className="flex gap-4 items-center">
+            <div className="flex-none">
+              <label>
+                Enter item:
+                <input
+                  ref={inputRef}
+                  type="text"
+                  className="text-black ml-3 px-2 inline-block"
+                ></input>
+              </label>
+            </div>
 
-            <Button task={{ taskFunction: addTaskClick, text: 'Add', buttonType: 'submit' }} />
+            <div className="flex-1">
+              <Button task={{ taskFunction: addTaskClick, text: 'Add', buttonType: 'submit' }} />
+            </div>
           </div>
         </div>
 
