@@ -2,7 +2,7 @@ import { useAPI } from './context/CharacterAPI';
 
 const Header = () => {
   const { characters, isLoading, characterIndex } = useAPI();
-  const characterName = characters[characterIndex - 1]?.name ?? '¯\\_(ツ)_/¯';
+  const characterName = characters[characterIndex - 1]?.result.properties.name ?? '¯\\_(ツ)_/¯';
 
   return (
     <div className="flex-1">
